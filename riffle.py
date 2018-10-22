@@ -1,13 +1,13 @@
 def riffle_once(L):
-    import math
+    import random
 
-    halfList1 = L[:len(L)/2]
-    halfList2 = L[len(L)/2:]
+    halfList1 = L[:int(len(L)/2)]
+    halfList2 = L[int(len(L)/2):]
 
     finalList = []
 
     for x in range(len(halfList1)):
-        rInt = random(0, 1, 1)
+        rInt = random.randint(0, 1)
         if rInt == 0:
             finalList.append(halfList1[x])
             finalList.append(halfList2[x])
@@ -25,4 +25,4 @@ def riffle(L, N):
 
 
 if __name__ == "__main__":
-    print(riffle(list(range(21)), 4))
+    print(riffle(list(range(22)), 30))
