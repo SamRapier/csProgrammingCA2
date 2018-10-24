@@ -163,7 +163,7 @@ def finished(players):
     # a high card, there are now 3 player with 0 cards, but does the next 
     # player pay a penalty to bring the last player back into the game?
     """
-    if numOut == 3:
+    if numOut == len(players) -1:
         return True
 
     return False
