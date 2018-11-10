@@ -88,7 +88,7 @@ def take_turn(player, pile):
     """
     This function is called for every turn in the game. It adds a card from 
     the current players hand to the pile. It also check if a high card is on
-    the top of the pile and makes the next use pay the penalty
+    the top of the pile and makes the next player pay the penalty
 
     The arguments taken are:
         -player (takes the cards held by the current player)

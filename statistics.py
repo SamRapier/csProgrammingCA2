@@ -1,7 +1,9 @@
 from beggar import beggar
 
 def statistics(Nplayers, games):
-    
+    """
+
+    """
     
     shortest = 9999999
     average = 0
@@ -31,7 +33,7 @@ def statistics(Nplayers, games):
 
 if __name__ == "__main__":
     for numPlayers in range(2, 11):
-        shortest, average, longest = statistics(numPlayers, 5000)
+        shortest, average, longest = statistics(numPlayers, 200)
         print('For', numPlayers, 'players')
         print('Shortest game:', shortest)
         print('Longest game:', longest)
