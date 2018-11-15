@@ -1,3 +1,5 @@
+from random import shuffle
+
 def beggar(Nplayers, deck, talkative = False):
     """
     Play a single game of beggar-your-neighbour
@@ -10,13 +12,19 @@ def beggar(Nplayers, deck, talkative = False):
     The function returns how many turns it takes to finish the game
     """
 
-    from random import shuffle
+    # validates Nplayers so it is an integer between 2 and 15
+    if not isinstance(Nplayers, int) or Nplayers < 2 or Nplayers > 15:
+        raise ValueError("invalid argument for number of players: ", Nplayers)
+
 
     # Shuffle the deck and initialise the variables
     shuffle(deck)
     players = []
     pile = []
     count = 0
+    currentPlayer = 0
+    turn = 0
+    previousPlayer = None
 
     # Add a list inside the players list for each player
     for i in range(Nplayers):
@@ -29,10 +37,6 @@ def beggar(Nplayers, deck, talkative = False):
         if count >= Nplayers:
             count = 0
 
-
-    currentPlayer = 0
-    turn = 0
-    previousPlayer = None
 
     # This is the main game loop and continues until the finished function 
     # returns true
@@ -54,6 +58,7 @@ def beggar(Nplayers, deck, talkative = False):
                 
                 print()
 
+            # Plays the next turn and saves the returned tuples
             players[currentPlayer], pile, reward = take_turn(players[currentPlayer], pile)
 
             # Add the reward to the previous player
@@ -71,6 +76,7 @@ def beggar(Nplayers, deck, talkative = False):
         if currentPlayer >= Nplayers:
             currentPlayer = 0
     
+    # prints out the final hand in the game to show who won
     if finished(players):
         if talkative == True:
             print('Final hand')
@@ -79,24 +85,23 @@ def beggar(Nplayers, deck, talkative = False):
             for i in range(Nplayers):
                 print('   ', i, '  ', players[i])
             
-            print()
+            print('\nThere were', turn, 'turns in this game')
 
     return turn
 
 
 def take_turn(player, pile):
     """
-    This function is called for every turn in the game. It adds a card from 
-    the current players hand to the pile. It also check if a high card is on
-    the top of the pile and makes the next player pay the penalty
+    This function is called for every turn in the game. It checked if a high 
+    card is on the top of the pile and makes the next player pay the penalty. 
+    It adds a card from the current players hand to the pile. 
 
     The arguments taken are:
         -player (takes the cards held by the current player)
         -pile (the current pile of cards)
 
     The funciton returns the players cards after the turn, the pile after the
-    turn and th reward, the cards that should be given to the previous player
-    if a penalty cards was played
+    turn and the reward
     """
 
     # Defining the high cards
@@ -109,11 +114,10 @@ def take_turn(player, pile):
         penalty = pile[-1] - 10
         newHigh = False
 
+        # Payer pays the penalty, if they run out of cards while paying they 
+        # are out
         for i in range(penalty):
-            """
-            # How to deal with a player who is paying a penalty but runs out
-            # of cards and cannot fully pay the penalty?
-            """
+            
             if len(player) > 0:
                 card = player.pop(0)
 
@@ -131,7 +135,7 @@ def take_turn(player, pile):
             reward = []
 
     else:
-        # This is when no high card is played and the players top card is 
+        # When no high card is played the players top card is 
         # added to the pile
         card = player.pop(0)
         pile.append(card)
@@ -142,7 +146,7 @@ def take_turn(player, pile):
 
 def finished(players):
     """
-    Return true if one players has all the cards and the others have none
+    Return true if one player has all the cards and the others have none
 
     Checks to see if the game has finished by checking if the other players 
     any cards left
@@ -158,12 +162,9 @@ def finished(players):
         if len(players[i]) == 0:
             numOut = numOut + 1
 
-    """
-    # How to deal with a player who plays their final card which happens to be
-    # a high card, there are now 3 player with 0 cards, but does the next 
-    # player pay a penalty to bring the last player back into the game?
-    """
-    if numOut == len(players) -1:
+    
+    # if there is only one player left, the function returns True
+    if numOut == len(players) - 1:
         return True
 
     return False
@@ -172,9 +173,11 @@ def finished(players):
 if __name__ == "__main__":
     numPlayers = input('How many players are there? ')
 
+    # Creates a deck of cards
     cardDeck = []
     for i in range(4):
         for j in range(2, 15):
             cardDeck.append(j)
 
+    
     beggar(int(numPlayers), cardDeck, True)
